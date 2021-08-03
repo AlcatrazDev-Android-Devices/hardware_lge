@@ -16,7 +16,6 @@ cc_binary {
         "libbinder",
         "libcutils",
         "libhidlbase",
-        "libhidltransport",
         "libutils",
         "android.hardware.audio@2.0",
         "android.hardware.audio@4.0",
