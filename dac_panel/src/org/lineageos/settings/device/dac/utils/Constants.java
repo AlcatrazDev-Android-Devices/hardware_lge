@@ -15,6 +15,8 @@ public class Constants {
     public static final String HIFI_DOP_KEY = "hifi_dop_dropdown";
     public static final String HIFI_MODE_KEY = "hifi_mode_dropdown";
     public static final String AVC_VOLUME_KEY = "avc_volume_seekbar";
+    public static final String OVERRIDE_SYSTEM_IMPEDANCE_KEY = "override_system_impedance_switch";
+    public static final String OVERRIDE_TO_CUSTOM_FILTER_KEY = "override_to_custom_filter_switch";
 
     public static final String   CUSTOM_FILTER_SHAPE_KEY = "custom_filter_shape";
     public static final String   CUSTOM_FILTER_SYMMETRY_KEY = "custom_filter_symmetry";

@@ -14,6 +14,12 @@
     <PreferenceCategory
         app:title="@string/quad_dac_settings" >
 
+        <SwitchPreference
+            app:key="override_system_impedance_switch"
+            app:summary="@string/override_headset_summary"
+            app:title="@string/override_headset"
+            app:isPreferenceVisible="false" />
+
         <ListPreference
             app:key="hifi_mode_dropdown"
             app:title="@string/hifi_mode"
@@ -46,6 +52,12 @@
             app:summary="%s"
             app:entries="@array/digital_filter_entry_values"
             app:entryValues="@array/digital_filter_entry_values"
+            app:isPreferenceVisible="false" />
+
+        <SwitchPreference
+            app:key="override_to_custom_filter_switch"
+            app:summary="@string/override_to_custom_filter_summary"
+            app:title="@string/override_to_custom_filter"
             app:isPreferenceVisible="false" />
 
     </PreferenceCategory>

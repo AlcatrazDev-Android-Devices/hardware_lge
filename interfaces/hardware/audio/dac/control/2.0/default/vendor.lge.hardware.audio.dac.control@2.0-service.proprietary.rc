@@ -1,16 +1,20 @@
 on init
-    chown system system /sys/kernel/es9218_dac/avc_volume
-    chmod 0660 /sys/kernel/es9218_dac/avc_volume
-    chown system system /sys/kernel/es9218_dac/headset_type
-    chmod 0660 /sys/kernel/es9218_dac/headset_type
-    chown system system /sys/kernel/es9218_dac/left_volume
-    chmod 0660 /sys/kernel/es9218_dac/left_volume
-    chown system system /sys/kernel/es9218_dac/right_volume
-    chmod 0660 /sys/kernel/es9218_dac/right_volume
-    chown system system /sys/kernel/es9218_dac/ess_filter
-    chmod 0660 /sys/kernel/es9218_dac/ess_filter
-    chown system system /sys/kernel/es9218_dac/ess_custom_filter
-    chmod 0660 /sys/kernel/es9218_dac/ess_custom_filter
+    chown system system /sys/bus/i2c/drivers/es9218-codec/avc_volume
+    chmod 0660 /sys/bus/i2c/drivers/es9218-codec/avc_volume
+    chown system system /sys/bus/i2c/drivers/es9218-codec/headset_type
+    chmod 0660 /sys/bus/i2c/drivers/es9218-codec/headset_type
+    chown system system /sys/bus/i2c/drivers/es9218-codec/left_volume
+    chmod 0660 /sys/bus/i2c/drivers/es9218-codec/left_volume
+    chown system system /sys/bus/i2c/drivers/es9218-codec/right_volume
+    chmod 0660 /sys/bus/i2c/drivers/es9218-codec/right_volume
+    chown system system /sys/bus/i2c/drivers/es9218-codec/ess_filter
+    chmod 0660 /sys/bus/i2c/drivers/es9218-codec/ess_filter
+    chown system system /sys/bus/i2c/drivers/es9218-codec/ess_custom_filter
+    chmod 0660 /sys/bus/i2c/drivers/es9218-codec/ess_custom_filter
+    chown system system /sys/bus/i2c/drivers/es9218-codec/override_impedance
+    chmod 0660 /sys/bus/i2c/drivers/es9218-codec/override_impedance
+    chown system system /sys/bus/i2c/drivers/es9218-codec/override_to_custom_filter
+    chmod 0660 /sys/bus/i2c/drivers/es9218-codec/override_to_custom_filter
 
 on property:sys.boot_completed=1
     start vendor.lge-dac-control-2-0

@@ -192,4 +192,24 @@ public class QuadDAC {
     {
         dac.resetCustomFilterCoeffs();
     }
+
+    public static boolean getOverrideImpedance() throws RemoteException
+    {
+        return dac.getOverrideImpedance();
+    }
+
+    public static void setOverrideImpedance(boolean override) throws RemoteException
+    {
+        dac.setOverrideImpedance(override);
+    }
+
+    public static boolean getOverrideToCustomFilter() throws RemoteException
+    {
+        return dac.getOverrideToCustomFilter();
+    }
+
+    public static void setOverrideToCustomFilter(boolean override) throws RemoteException
+    {
+        dac.setOverrideToCustomFilter(override);
+    }
 }

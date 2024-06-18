@@ -20,13 +20,15 @@
 #include <vector>
 
 /* Paths */
-#define COMMON_ES9218_PATH                 "/sys/kernel/es9218_dac/"
+#define COMMON_ES9218_PATH                 "/sys/bus/i2c/drivers/es9218-codec/"
 #define AVC_VOLUME                         "avc_volume"
 #define VOLUME_LEFT                        "left_volume"
 #define VOLUME_RIGHT                       "right_volume"
 #define HIFI_MODE                          "headset_type"
 #define ESS_FILTER                         "ess_filter"
 #define ESS_CUSTOM_FILTER                  "ess_custom_filter"
+#define OVERRIDE_IMPEDANCE                 "override_impedance"
+#define OVERRIDE_TO_CUSTOM_FILTER          "override_to_custom_filter"
 
 /* Properties */
 #ifndef PROPRIETARY_AUDIO_MODULE
@@ -45,6 +47,8 @@
 #define PROPERTY_CUSTOM_FILTER_SHAPE       "persist.vendor.audio.ess.customFilterShape"
 #define PROPERTY_CUSTOM_FILTER_SYMMETRY    "persist.vendor.audio.ess.customFilterSymmetry"
 extern std::vector<std::string> PROPERTY_CUSTOM_FILTER_COEFFS;
+#define PROPERTY_OVERRIDE_IMPEDANCE             "persist.vendor.audio.ess.overrideImpedance"
+#define PROPERTY_OVERRIDE_TO_CUSTOM_FILTER      "persist.vendor.audio.ess.overrideToCustomFilter"
 
 #ifndef PROPRIETARY_AUDIO_MODULE
 #define PROPERTY_VALUE_HIFI_DAC_ENABLED    "true"

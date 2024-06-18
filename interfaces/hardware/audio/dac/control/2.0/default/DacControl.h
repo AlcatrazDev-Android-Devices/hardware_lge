@@ -78,6 +78,14 @@ class DacControl : public IDacControl {
 
     Return<bool> resetCustomFilterCoeffs() override;
 
+    Return<bool> getOverrideImpedance() override;
+
+    Return<bool> setOverrideImpedance(bool override) override;
+
+    Return<bool> getOverrideToCustomFilter() override;
+
+    Return<bool> setOverrideToCustomFilter(bool override) override;
+
     std::map<Feature, FeatureStates> mSupportedStates;
     std::vector<Feature> mSupportedFeatures;
 
@@ -104,6 +112,8 @@ class DacControl : public IDacControl {
     std::string volumeRightPath;
     std::string essFilterPath;
     std::string customFilterPath;
+    std::string overrideImpedancePath;
+    std::string overrideToCustomFilterPath;
 };
 
 }  // namespace implementation

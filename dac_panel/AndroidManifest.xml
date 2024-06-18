@@ -16,48 +16,14 @@
         android:defaultToDeviceProtectedStorage="true"
         android:directBootAware="true">
 
-
         <activity
             android:name=".QuadDACPanelActivity"
             android:label="@string/quad_dac"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.android.settings.action.EXTRA_SETTINGS" />
-		        <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES"/>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <meta-data
-                android:name="com.android.settings.icon"
-                android:resource="@drawable/ic_quad_dac_icon" />
-            <meta-data
-                android:name="com.android.settings.category"
-                android:value="com.android.settings.category.ia.sound" />
-            <meta-data
-                android:name="com.android.settings.summary"
-                android:value="@string/summary_empty" />
         </activity>
-
-        <service
-            android:name=".QuadDACTileService"
-            android:icon="@drawable/ic_quad_dac_icon"
-            android:label="@string/quad_dac"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
-            android:exported="true">
-
-            <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE"/>
-            </intent-filter>
-        </service>
-
-        <provider
-            android:name=".QuadDACPanelSearchIndexablesProvider"
-            android:authorities="org.lineageos.settings.device.dac"
-            android:multiprocess="false"
-            android:grantUriPermissions="true"
-            android:permission="android.permission.READ_SEARCH_INDEXABLES"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.content.action.SEARCH_INDEXABLES_PROVIDER" />
-            </intent-filter>
-        </provider>
     </application>
 </manifest>

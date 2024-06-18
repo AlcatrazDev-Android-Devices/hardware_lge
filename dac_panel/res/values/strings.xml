@@ -57,5 +57,9 @@
     <string name="avc_volume">AVC Volume</string>
     <string name="avc_volume_summary">Amplifies volume</string>
 
+    <string name="override_headset">Override impedance mode</string>
+    <string name="override_headset_summary">Force override system headset type selection</string>
+    <string name="override_to_custom_filter">Override to custom digital filter</string>
+    <string name="override_to_custom_filter_summary">Force override to custom digital filter</string>
 </resources>
 

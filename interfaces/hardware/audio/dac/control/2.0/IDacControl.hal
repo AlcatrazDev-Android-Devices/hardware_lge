@@ -87,4 +87,24 @@ interface IDacControl {
     * Resets all coefficients for the custom ESS filter
     */
     resetCustomFilterCoeffs() generates (bool rc);
+
+    /**
+    * get override impedance status
+    */
+    getOverrideImpedance() generates (bool rc);
+
+    /**
+    * set override impedance status
+    */
+    setOverrideImpedance(bool override) generates (bool rc);
+
+    /**
+    * get override to custom filter status
+    */
+    getOverrideToCustomFilter() generates (bool rc);
+
+    /**
+    * set override to custom filter status
+    */
+    setOverrideToCustomFilter(bool override) generates (bool rc);
 };

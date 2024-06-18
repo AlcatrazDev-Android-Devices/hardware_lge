@@ -35,7 +35,7 @@ public class QuadDACPanelFragment extends PreferenceFragment
 
     private static final String TAG = "QuadDACPanelFragment";
 
-    private SwitchPreference quaddac_switch;
+    private SwitchPreference quaddac_switch, override_system_impedance_switch, override_to_custom_filter_switch;
     private ListPreference sound_preset_list, digital_filter_list, mode_list;
     private BalancePreference balance_preference;
     private SeekBarPreference avc_volume;
@@ -76,17 +76,42 @@ public class QuadDACPanelFragment extends PreferenceFragment
 
         try {
             if (preference instanceof SwitchPreference) {
+                if (preference.getKey().equals(Constants.DAC_SWITCH_KEY)) {
+                    boolean set_dac_on = (boolean) newValue;
 
-                boolean set_dac_on = (boolean) newValue;
+                    if (set_dac_on) {
+                        QuadDAC.enable();
+                        enableExtraSettings();
+                        return true;
+                    } else {
+                        QuadDAC.disable();
+                        disableExtraSettings();
+                        return true;
+                    }
+                } else if (preference.getKey().equals(Constants.OVERRIDE_SYSTEM_IMPEDANCE_KEY)) {
+                    boolean override = (boolean) newValue;
 
-                if (set_dac_on) {
-                    QuadDAC.enable();
-                    enableExtraSettings();
-                    return true;
-                } else {
-                    QuadDAC.disable();
-                    disableExtraSettings();
-                    return true;
+                    if (override) {
+                        QuadDAC.setOverrideImpedance(true);
+                        enableExtraSettingsImpedance();
+                        return true;
+                    } else {
+                        QuadDAC.setOverrideImpedance(false);
+                        disableExtraSettingsImpedance();
+                        return true;
+                    }
+                } else if (preference.getKey().equals(Constants.OVERRIDE_TO_CUSTOM_FILTER_KEY)) {
+                    boolean override = (boolean) newValue;
+
+                    if (override) {
+                        QuadDAC.setOverrideToCustomFilter(true);
+                        enableCustomFilter();
+                        return true;
+                    } else {
+                        QuadDAC.setOverrideToCustomFilter(false);
+                        disableCustomFilter();
+                        return true;
+                    }
                 }
             }
             if (preference instanceof ListPreference) {
@@ -195,6 +220,12 @@ public class QuadDACPanelFragment extends PreferenceFragment
         quaddac_switch = (SwitchPreference) findPreference(Constants.DAC_SWITCH_KEY);
         quaddac_switch.setOnPreferenceChangeListener(this);
 
+        override_system_impedance_switch = (SwitchPreference) findPreference(Constants.OVERRIDE_SYSTEM_IMPEDANCE_KEY);
+        override_system_impedance_switch.setOnPreferenceChangeListener(this);
+
+        override_to_custom_filter_switch = (SwitchPreference) findPreference(Constants.OVERRIDE_TO_CUSTOM_FILTER_KEY);
+        override_to_custom_filter_switch.setOnPreferenceChangeListener(this);
+
         sound_preset_list = (ListPreference) findPreference(Constants.SOUND_PRESET_KEY);
         sound_preset_list.setOnPreferenceChangeListener(this);
 
@@ -263,6 +294,12 @@ public class QuadDACPanelFragment extends PreferenceFragment
                     setCoeffSummary(i, QuadDAC.getCustomFilterCoeff(i));
                 }
             }
+            if (QuadDAC.getSupportedFeatures().contains(Feature.OverrideImpedance)) {
+                override_system_impedance_switch.setVisible(true);
+            }
+            if (QuadDAC.getSupportedFeatures().contains(Feature.OverrideToCustomFilter)) {
+                override_to_custom_filter_switch.setVisible(true);
+            }
         } catch(Exception e) {
             Log.d(TAG, "addPreferencesFromResource: " + e.toString());
         }
@@ -293,13 +330,21 @@ public class QuadDACPanelFragment extends PreferenceFragment
     {
         ArrayList<Integer> supportedFeatures = QuadDAC.getSupportedFeatures();
         digital_filter_list.setEnabled(true);
-        mode_list.setEnabled(true);
         avc_volume.setEnabled(true);
         balance_preference.setEnabled(true);
         if(supportedFeatures.contains(Feature.SoundPreset))
             sound_preset_list.setEnabled(true);
-        if(supportedFeatures.contains(Feature.CustomFilter))
+
+        try {
+            mode_list.setEnabled(QuadDAC.getOverrideImpedance());
+            if(QuadDAC.getOverrideToCustomFilter())
             enableCustomFilter();
+        } catch (Exception e) {
+            Log.d(TAG, "enableExtraSettings: " + e.toString());
+        }
+
+        override_system_impedance_switch.setEnabled(true);
+        override_to_custom_filter_switch.setEnabled(true);
     }
 
     private void disableExtraSettings()
@@ -310,11 +355,32 @@ public class QuadDACPanelFragment extends PreferenceFragment
         balance_preference.setEnabled(false);
         sound_preset_list.setEnabled(false);
         disableCustomFilter();
+
+        override_system_impedance_switch.setEnabled(false);
+        override_to_custom_filter_switch.setEnabled(false);
+    }
+
+    private void enableExtraSettingsImpedance()
+    {
+        mode_list.setEnabled(true);
+    }
+
+    private void disableExtraSettingsImpedance()
+    {
+        mode_list.setEnabled(false);
+    }
+
+    private void setCustomFilterVisible() {
+        custom_filter_shape.setVisible(true);
+        custom_filter_symmetry.setVisible(true);
+        for(int i = 0; i < 14; i++)
+            custom_filter_coeffs[i].setVisible(true);
     }
 
     private void enableCustomFilter()
     {
-        checkCustomFilterVisibility();
+        // checkCustomFilterVisibility();
+        setCustomFilterVisible();
         custom_filter_shape.setEnabled(true);
         custom_filter_symmetry.setEnabled(true);
         for(int i = 0; i < 14; i++){
@@ -331,7 +397,8 @@ public class QuadDACPanelFragment extends PreferenceFragment
 
     private void disableCustomFilter()
     {
-        checkCustomFilterVisibility();
+        // checkCustomFilterVisibility();
+        setCustomFilterVisible();
         custom_filter_shape.setEnabled(false);
         custom_filter_symmetry.setEnabled(false);
         for(int i = 0; i < 14; i++)

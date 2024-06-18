@@ -87,6 +87,10 @@ DacControl::DacControl() {
     essFilterPath.append(ESS_FILTER);
     customFilterPath = std::string(COMMON_ES9218_PATH);
     customFilterPath.append(ESS_CUSTOM_FILTER);
+    overrideImpedancePath = std::string(COMMON_ES9218_PATH);
+    overrideImpedancePath.append(OVERRIDE_IMPEDANCE);
+    overrideToCustomFilterPath = std::string(COMMON_ES9218_PATH);
+    overrideToCustomFilterPath.append(OVERRIDE_TO_CUSTOM_FILTER);
 
     mAudioDevicesFactory_V6_0 = ::android::hardware::audio::V6_0::IDevicesFactory::getService();
     if(mAudioDevicesFactory_V6_0 == nullptr) {
@@ -158,7 +162,7 @@ DacControl::DacControl() {
         setFeatureValue(Feature::DigitalFilter, getFeatureValue(Feature::DigitalFilter));
     }
 
-#ifdef PROPRIETARY_AUDIO_MODULE
+#if 0 //#ifdef PROPRIETARY_AUDIO_MODULE
     /* Sound Presets */
     mSupportedFeatures.push_back(Feature::SoundPreset);
     FeatureStates soundpresets_fstates;
@@ -208,6 +212,18 @@ DacControl::DacControl() {
         setCustomFilterSymmetry(getCustomFilterSymmetry());
         for(int i=0; i < 14; i++)
             setCustomFilterCoeff(i, getCustomFilterCoeff(i));
+    }
+
+    /* Override impedance */
+    if(stat(overrideImpedancePath.c_str(), &buffer) == 0) {
+        mSupportedFeatures.push_back(Feature::OverrideImpedance);
+        setOverrideImpedance(getOverrideImpedance());
+    }
+
+    /* Override to custom filter */
+    if(stat(overrideToCustomFilterPath.c_str(), &buffer) == 0) {
+        mSupportedFeatures.push_back(Feature::OverrideToCustomFilter);
+        setOverrideToCustomFilter(getOverrideToCustomFilter());
     }
 }
 
@@ -549,6 +565,24 @@ Return<bool> DacControl::resetCustomFilterCoeffs() {
     set(customFilterPath, parseUpdatedCustomFilterData());
 
     return true;
+}
+
+Return<bool> DacControl::getOverrideImpedance() {
+    return property_get_int32(PROPERTY_OVERRIDE_IMPEDANCE, 0);;
+}
+
+Return<bool> DacControl::setOverrideImpedance(bool override) {
+    set(overrideImpedancePath, override ? 1 : 0);
+    return (bool)property_set(PROPERTY_OVERRIDE_IMPEDANCE, std::to_string(override ? 1 : 0).c_str());
+}
+
+Return<bool> DacControl::getOverrideToCustomFilter() {
+    return property_get_int32(PROPERTY_OVERRIDE_TO_CUSTOM_FILTER, 0);;
+}
+
+Return<bool> DacControl::setOverrideToCustomFilter(bool override) {
+    set(overrideToCustomFilterPath, override ? 1 : 0);
+    return (bool)property_set(PROPERTY_OVERRIDE_TO_CUSTOM_FILTER, std::to_string(override ? 1 : 0).c_str());
 }
 
 }  // namespace implementation
